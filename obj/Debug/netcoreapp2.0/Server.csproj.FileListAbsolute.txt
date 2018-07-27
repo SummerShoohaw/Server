@@ -1,0 +1,11 @@
+/Users/summershoohaw/Academic/Web Tools/Final/Server/obj/Debug/netcoreapp2.0/Server.csprojResolveAssemblyReference.cache
+/Users/summershoohaw/Academic/Web Tools/Final/Server/obj/Debug/netcoreapp2.0/Server.csproj.CoreCompileInputs.cache
+/Users/summershoohaw/Academic/Web Tools/Final/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfoInputs.cache
+/Users/summershoohaw/Academic/Web Tools/Final/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfo.cs
+/Users/summershoohaw/Academic/Web Tools/Final/Server/bin/Debug/netcoreapp2.0/Server.deps.json
+/Users/summershoohaw/Academic/Web Tools/Final/Server/bin/Debug/netcoreapp2.0/Server.runtimeconfig.json
+/Users/summershoohaw/Academic/Web Tools/Final/Server/bin/Debug/netcoreapp2.0/Server.runtimeconfig.dev.json
+/Users/summershoohaw/Academic/Web Tools/Final/Server/bin/Debug/netcoreapp2.0/Server.dll
+/Users/summershoohaw/Academic/Web Tools/Final/Server/bin/Debug/netcoreapp2.0/Server.pdb
+/Users/summershoohaw/Academic/Web Tools/Final/Server/obj/Debug/netcoreapp2.0/Server.dll
+/Users/summershoohaw/Academic/Web Tools/Final/Server/obj/Debug/netcoreapp2.0/Server.pdb
