@@ -6,15 +6,28 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+    <Folder Include="gamedata\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
-    <PackageReference Include="MySqlConnector" Version="0.42.3" />
+    <PackageReference Include="MySqlConnector" Version="0.43.0" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\CreateTable.sql" />
+    <Content Remove="gamedata\users.json" />
+    <Content Remove="gamedata\pets.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gamedata\users.json" />
+    <None Include="gamedata\pets.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Models\DataClass.cs" />
+  </ItemGroup>
 </Project>

@@ -1,64 +1,79 @@
 ﻿using System;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Server.Models
 {
     public class DBConnector
     {
-		public MySqlConnectionStringBuilder builder { get; set; }
-		public DBConnector(){
-			builder = new MySqlConnectionStringBuilder
+        MySqlConnectionStringBuilder builder;
+        MySqlConnection connection;
+        bool isConnected = false;
+
+        public DBConnector()
+        {
+            builder = new MySqlConnectionStringBuilder
             {
-                Server = "db-6250final.mysql.database.azure.com",
-                Database = "mysql",
-                UserID = "admin-final@db-6250final",
-                Password = "6250Webtools",
+                Server = "mpdatabase.mysql.database.azure.com",
+                Database = "",
+                UserID = "helloworld",
+                Password = "Mpdatabase!",
                 SslMode = MySqlSslMode.Required,
             };
-		}
-        
-		public async Task Writing(string script){
-			using (var conn = new MySqlConnection(builder.ConnectionString)){
-				Console.WriteLine("openning connection for Insert Data");
-				await conn.OpenAsync();
+            connection = new MySqlConnection(builder.ConnectionString);
+        }
 
-				using (var command = conn.CreateCommand()){
-					command.CommandText = script;
-					await command.ExecuteNonQueryAsync();
-					Console.WriteLine("script running finished");
-				}
-				Console.WriteLine("Closing connection");
-				conn.Close();
-			}
-		}
-        
-		public async Task<string> ReadPet(string script){
-			using (var conn = new MySqlConnection(builder.ConnectionString))
+        //datatbase operation C: create new user
+        public async Task CreateNewUserAsync(string username){
+            if(!isConnected)
             {
-                Console.WriteLine("Opening connection");
-                await conn.OpenAsync();
-
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandText = script;
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-						await reader.ReadAsync();
-						return JsonConvert.SerializeObject(new
-						{
-							petName = reader.GetString(0),
-							petWeight = reader.GetInt32(1),
-							petHungry = reader.GetInt32(2),
-							petAge = reader.GetInt32(3),
-						});
-                    }
-                }
+                throw new Exception("MySQL not connected");
             }
-		}
+            var command = connection.CreateCommand();
+            command.CommandText = "INSERT INTO User_Table VALUES (" + username + ");";
+            await command.ExecuteNonQueryAsync();
+        }
 
+        //database operation C: create new pet
+        public async Task CreateNewPetAsync(string username,string petType,string petName){
+            if (!isConnected)
+            {
+                throw new Exception("MySQL not connected");
+            }
+            var command = connection.CreateCommand();
+            command.CommandText = "INSERT INTO Pet_Table(....) VALUES ();"; //Script not finished
+            await command.ExecuteNonQueryAsync();
+        }
+
+        //database operation R: read pet data
+        public Pet ReadPetData(string username){
+            if (!isConnected)
+            {
+                throw new Exception("MySQL not connected");
+            }
+            throw new NotImplementedException("not implemeneted");
+        }
+
+        //database operation U: update pet data
+        public void UpdatePetData(int petID,Pet newpetdata){
+            if (!isConnected)
+            {
+                throw new Exception("MySQL not connected");
+            }
+            throw new NotImplementedException("not implemeneted");
+        }
+
+        //server-side operation: close connection  
+        public void CloseConnection(){
+            connection.Close();
+            isConnected = false;
+        }
+
+        public async Task OpenConnectionAsync(){
+            await connection.OpenAsync();
+            isConnected = true;
+        }
     }
+    //end of class DBConnector
+
 }

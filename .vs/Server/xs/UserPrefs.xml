@@ -1,12 +1,14 @@
 ﻿<Properties StartupConfiguration="{B1E20DD1-EB88-41EE-B2A2-9D876BC3BC18}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Startup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Models/DBConnector.cs">
     <Files>
-      <File FileName="Models/DBConnector.cs" Line="25" Column="43" />
       <File FileName="Controllers/ValuesController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/DBController.cs" Line="21" Column="4" />
-      <File FileName="Models/Pet.cs" Line="3" Column="24" />
-      <File FileName="Models/User.cs" Line="1" Column="1" />
-      <File FileName="Startup.cs" Line="41" Column="1" />
+      <File FileName="Models/Pet.cs" Line="13" Column="25" />
+      <File FileName="Models/User.cs" Line="7" Column="2" />
+      <File FileName="Startup.cs" Line="10" Column="36" />
+      <File FileName="Controllers/GameController.cs" Line="27" Column="3" />
+      <File FileName="gamedata/users.json" Line="2" Column="1" />
+      <File FileName="gamedata/pets.json" Line="2" Column="1" />
+      <File FileName="Models/DBConnector.cs" Line="58" Column="61" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
