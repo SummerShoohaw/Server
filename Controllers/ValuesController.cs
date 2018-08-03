@@ -1,44 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using wechatApi.Models;
 
 namespace Server.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //this part is to decode the data from wechat api
+        private wxHelper helper;
+        private IMemoryCache cache;
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        public ValuesController(IMemoryCache cache)
         {
-            return "value";
+            this.cache = cache;
+            this.helper = new wxHelper();
         }
-
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        [Route("{code}")]
+        public string OnLogin(string code)
         {
+
+            string data = "";
+            using (StreamReader sr = new StreamReader(Request.Body))
+            {
+                data = sr.ReadToEnd();
+            }
+            AppSession appSession = JsonConvert.DeserializeObject<AppSession>(data);
+            string enData = appSession.encryptedData;
+            string iv = appSession.iv;
+            string key = appSession.sessionKey;
+            string res = helper.AES_decrypt(enData, key, iv);
+            return res;
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+    }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+    public class AppSession
+    {
+        public string encryptedData;
+        public string iv;
+        public string sessionKey;
     }
 }
