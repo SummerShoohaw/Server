@@ -6,6 +6,13 @@ namespace Server.Models
 {
     public class DBConnector
     {
+        string[] urls = 
+        { 
+            "pic-url1", 
+            "pic-url2", 
+            "pic-url3", 
+            "pic-url4" 
+        };
         MySqlConnectionStringBuilder builder;
         MySqlConnection connection;
         bool isConnected = false;
@@ -14,9 +21,9 @@ namespace Server.Models
         {
             builder = new MySqlConnectionStringBuilder
             {
-                Server = "mpdatabase.mysql.database.azure.com",
-                Database = "",
-                UserID = "helloworld",
+                Server = "mpdatabaseserver.mysql.database.azure.com",
+                Database = "mpdb",
+                UserID = "helloworld@mpdatabaseserver",
                 Password = "Mpdatabase!",
                 SslMode = MySqlSslMode.Required,
             };
@@ -35,32 +42,73 @@ namespace Server.Models
         }
 
         //database operation C: create new pet
-        public async Task CreateNewPetAsync(string username,string petType,string petName){
+        public async Task CreateNewPetAsync(string username,int petType,string petName){
             if (!isConnected)
             {
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "INSERT INTO Pet_Table(....) VALUES ();"; //Script not finished
+            command.CommandText = "INSERT INTO Pet_Table(petName,petUrl,petOwner,) VALUES (" + petName + "," + petType + "," + username + ");"; //Script not finished
             await command.ExecuteNonQueryAsync();
         }
 
-        //database operation R: read pet data
-        public Pet ReadPetData(string username){
+        //check user has pet or not
+        public async Task<int> CheckUserHasOrNot(string username){
             if (!isConnected)
             {
                 throw new Exception("MySQL not connected");
             }
-            throw new NotImplementedException("not implemeneted");
+            var command = connection.CreateCommand();
+            command.CommandText = "SELECT count(*) FROM Pet_Table where petOwner =" + username + " and isReturned = false";
+            int result = 0;
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    result = reader.GetInt32(0);
+                }
+            }
+            return result;
         }
 
-        //database operation U: update pet data
-        public void UpdatePetData(int petID,Pet newpetdata){
+        //database operation R: read pet data
+        public async Task<Pet> ReadPetDataAsync(string username){
             if (!isConnected)
             {
                 throw new Exception("MySQL not connected");
             }
-            throw new NotImplementedException("not implemeneted");
+            var command = connection.CreateCommand();
+            command.CommandText = "select * from Pet_View";
+            Pet pet = new Pet();
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    //pet.ID = reader.GetInt32(0);
+                    pet.name = reader.GetString(0);
+                    pet.age = reader.GetInt32(1);
+                    pet.weight = reader.GetInt32(2);
+                    pet.exer = reader.GetInt32(3);
+                    pet.imageNum = reader.GetInt32(4);
+                }
+            }
+            return pet;
+        }
+
+        // database operation U: update pet data
+        // number --> add how many
+        // content: 1 --> Age
+        //          2 --> Weight
+        //          3 --> Exercise
+        public async Task UpdatePetDataAsync(string username, int cnum, int number){
+            if (!isConnected)
+            {
+                throw new Exception("MySQL not connected");
+            }
+            string[] contents = { "petAge", "petWeight", "petExercise" };
+            var command = connection.CreateCommand();
+            command.CommandText = "UPDATE Pet_Table SET " + contents[cnum] + " = " + contents[cnum] + "+" + number + " where petOwner = " + username;
+            await command.ExecuteReaderAsync();
         }
 
         //server-side operation: close connection  
@@ -69,6 +117,7 @@ namespace Server.Models
             isConnected = false;
         }
 
+        //server-side operation: open connection  
         public async Task OpenConnectionAsync(){
             await connection.OpenAsync();
             isConnected = true;

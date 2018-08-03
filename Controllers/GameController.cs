@@ -12,21 +12,72 @@ namespace Server.Controllers
     [Route("api/game")]
     public class GameController : Controller
     {
-		DataClass gamedata = new DataClass();
+        DBConnector connector = new DBConnector();
 
+        [HttpGet]
+        [Route("/createuser/{username?}")]
+        public async Task<StatusCodeResult> CreateUserAsync(string username)
+        {
+            await connector.OpenConnectionAsync();
+            await connector.CreateNewUserAsync(username);
+            connector.CloseConnection();
+            return new StatusCodeResult(200);
+        }
 
-		[HttpGet]
-		[Route("{username?}")]
-		public Pet GetPet(string username){
-			return gamedata.GetPetFromData(username);
-		}
+        //check user has a pet or not
+        [HttpGet]
+        [Route("/haspet/{username?}")]
+        public async Task<int> HasPetAsync(string username)
+        {
+            await connector.OpenConnectionAsync();
+            int has = await connector.CheckUserHasOrNot(username);
+            connector.CloseConnection();
+            return has;
+        }
 
-		[HttpPost]
-		[Route("feed/{username?}")]
-		public bool Feed(int number,string username){
-			gamedata.Feed(number, username);
+        
+        [HttpGet]
+        [Route("/getpet/{username?}")]
+        public async Task<Pet> GetPetAsync(string username)
+        {
+            Int32.TryParse(HttpContext.Request.Query["urlnum"].ToString(),out int urlNum);
+            string petName = HttpContext.Request.Query["petname"].ToString();
 
-			return true;
-		}
+            await connector.OpenConnectionAsync();
+            Pet pet = await connector.ReadPetDataAsync(username);
+            connector.CloseConnection();
+            return pet;
+        }
+
+        // querystring: pet url number --> 1 or 2 or 3 or 4 (must be a int)
+        //              pet name --> any
+        public async Task<StatusCodeResult> CreatePetAsync(string username)
+        {
+            Int32.TryParse(HttpContext.Request.Query["urlnum"].ToString(),out int urlnum);
+            string petName = HttpContext.Request.Query["petname"].ToString();
+
+            await connector.OpenConnectionAsync();
+            await connector.CreateNewPetAsync(username,urlnum,petName);
+            connector.CloseConnection();
+            return new StatusCodeResult(200);
+        }
+
+        //query string detauls: 
+        // content: 1 --> Age
+        //          2 --> Weight
+        //          3 --> Exercise 
+        // number : how many is going to change
+        [HttpPost]
+        [Route("/update/{username}")]
+        public async Task<StatusCodeResult> UpdatePet(string username){
+            Int32.TryParse(HttpContext.Request.Query["content"].ToString(), out int content);
+            Int32.TryParse(HttpContext.Request.Query["number"].ToString(), out int number);
+
+            await connector.OpenConnectionAsync();
+            await connector.UpdatePetDataAsync(username, content, number);
+            connector.CloseConnection();
+
+            return new StatusCodeResult(200);
+        }
     }
 }

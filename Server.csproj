@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
-    <Folder Include="gamedata\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,10 +21,6 @@
     <Content Remove="wwwroot\CreateTable.sql" />
     <Content Remove="gamedata\users.json" />
     <Content Remove="gamedata\pets.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="gamedata\users.json" />
-    <None Include="gamedata\pets.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\DataClass.cs" />
