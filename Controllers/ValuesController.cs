@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using wechatApi.Models;
 
 namespace Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/decrypt")]
     public class ValuesController : Controller
     {
         //this part is to decode the data from wechat api
@@ -21,6 +22,7 @@ namespace Server.Controllers
             this.cache = cache;
             this.helper = new wxHelper();
         }
+
         [HttpPost]
         [Route("{code}")]
         public string OnLogin(string code)

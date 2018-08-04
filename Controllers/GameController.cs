@@ -13,6 +13,13 @@ namespace Server.Controllers
     public class GameController : Controller
     {
         DBConnector connector = new DBConnector();
+        
+        [HttpGet]
+        [Route("game")]
+        public string tstGame()
+        {
+            return "This is game";
+        }
 
         [HttpGet]
         [Route("/createuser/{username?}")]
