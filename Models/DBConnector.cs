@@ -37,7 +37,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "INSERT INTO User_Table VALUES (" + username + ");";
+            command.CommandText = "INSERT INTO user_table(wechatID) VALUE ('" + username + "');";
             await command.ExecuteNonQueryAsync();
         }
 
@@ -48,7 +48,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "INSERT INTO Pet_Table(petName,petUrl,petOwner,) VALUES (" + petName + "," + petType + "," + username + ");"; //Script not finished
+            command.CommandText = "INSERT INTO pet_table(petName,petUrl,petOwner,) VALUES ('" + petName + "','" + petType + "', '" + username + "');"; //Script not finished
             await command.ExecuteNonQueryAsync();
         }
 
@@ -59,7 +59,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "SELECT count(*) FROM Pet_Table where petOwner =" + username + " and isReturned = false";
+            command.CommandText = "SELECT count(*) FROM pet_table where petOwner =" + username + " and isReturned = false";
             int result = 0;
             using (var reader = await command.ExecuteReaderAsync())
             {
@@ -78,7 +78,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "select * from Pet_View";
+            command.CommandText = "select * from pet_view";
             Pet pet = new Pet();
             using (var reader = await command.ExecuteReaderAsync())
             {
@@ -107,7 +107,7 @@ namespace Server.Models
             }
             string[] contents = { "petAge", "petWeight", "petExercise" };
             var command = connection.CreateCommand();
-            command.CommandText = "UPDATE Pet_Table SET " + contents[cnum] + " = " + contents[cnum] + "+" + number + " where petOwner = " + username;
+            command.CommandText = "UPDATE pet_table SET " + contents[cnum] + " = " + contents[cnum] + "+" + number + " where petOwner = " + username;
             await command.ExecuteReaderAsync();
         }
 

@@ -12,18 +12,16 @@ namespace Server.Controllers
     [Route("api/game")]
     public class GameController : Controller
     {
-        DBConnector connector = new DBConnector();
-        
-        [HttpGet]
-        [Route("game")]
-        public string tstGame()
+        DBConnector connector;
+
+        public GameController()
         {
-            return "This is game";
+            this.connector = new DBConnector();
         }
 
         [HttpGet]
-        [Route("/createuser/{username?}")]
-        public async Task<StatusCodeResult> CreateUserAsync(string username)
+        [Route("createuser/{username?}")]
+        public async Task<StatusCodeResult> CreateUserAsync([FromQuery]string username)
         {
             await connector.OpenConnectionAsync();
             await connector.CreateNewUserAsync(username);
@@ -33,7 +31,7 @@ namespace Server.Controllers
 
         //check user has a pet or not
         [HttpGet]
-        [Route("/haspet/{username?}")]
+        [Route("haspet/{username?}")]
         public async Task<int> HasPetAsync(string username)
         {
             await connector.OpenConnectionAsync();
@@ -44,7 +42,7 @@ namespace Server.Controllers
 
         
         [HttpGet]
-        [Route("/getpet/{username?}")]
+        [Route("getpet/{username?}")]
         public async Task<Pet> GetPetAsync(string username)
         {
             Int32.TryParse(HttpContext.Request.Query["urlnum"].ToString(),out int urlNum);
@@ -75,7 +73,7 @@ namespace Server.Controllers
         //          3 --> Exercise 
         // number : how many is going to change
         [HttpPost]
-        [Route("/update/{username}")]
+        [Route("update/{username}")]
         public async Task<StatusCodeResult> UpdatePet(string username){
             Int32.TryParse(HttpContext.Request.Query["content"].ToString(), out int content);
             Int32.TryParse(HttpContext.Request.Query["number"].ToString(), out int number);
