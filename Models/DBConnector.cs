@@ -59,7 +59,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "SELECT count(*) FROM pet_table where petOwner =" + username + " and isReturned = false";
+            command.CommandText = "SELECT count(*) FROM pet_table where petOwner ='" + username + " ' and isReturned = false";
             int result = 0;
             using (var reader = await command.ExecuteReaderAsync())
             {

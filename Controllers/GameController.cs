@@ -32,7 +32,7 @@ namespace Server.Controllers
         //check user has a pet or not
         [HttpGet]
         [Route("haspet/{username?}")]
-        public async Task<int> HasPetAsync(string username)
+        public async Task<int> HasPetAsync([FromQuery]string username)
         {
             await connector.OpenConnectionAsync();
             int has = await connector.CheckUserHasOrNot(username);
@@ -43,7 +43,7 @@ namespace Server.Controllers
         
         [HttpGet]
         [Route("getpet/{username?}")]
-        public async Task<Pet> GetPetAsync(string username)
+        public async Task<Pet> GetPetAsync([FromQuery]string username)
         {
             Int32.TryParse(HttpContext.Request.Query["urlnum"].ToString(),out int urlNum);
             string petName = HttpContext.Request.Query["petname"].ToString();
