@@ -47,7 +47,6 @@ namespace Server.Controllers
         {
             Int32.TryParse(HttpContext.Request.Query["urlnum"].ToString(),out int urlNum);
             string petName = HttpContext.Request.Query["petname"].ToString();
-
             await connector.OpenConnectionAsync();
             Pet pet = await connector.ReadPetDataAsync(username);
             connector.CloseConnection();
@@ -56,7 +55,9 @@ namespace Server.Controllers
 
         // querystring: pet url number --> 1 or 2 or 3 or 4 (must be a int)
         //              pet name --> any
-        public async Task<StatusCodeResult> CreatePetAsync(string username)
+        [HttpGet]
+        [Route("createPet/{username?}")]
+        public async Task<StatusCodeResult> CreatePetAsync([FromQuery]string username)
         {
             Int32.TryParse(HttpContext.Request.Query["urlnum"].ToString(),out int urlnum);
             string petName = HttpContext.Request.Query["petname"].ToString();
@@ -74,7 +75,7 @@ namespace Server.Controllers
         // number : how many is going to change
         [HttpPost]
         [Route("update/{username}")]
-        public async Task<StatusCodeResult> UpdatePet(string username){
+        public async Task<StatusCodeResult> UpdatePet([FromQuery]string username){
             Int32.TryParse(HttpContext.Request.Query["content"].ToString(), out int content);
             Int32.TryParse(HttpContext.Request.Query["number"].ToString(), out int number);
 
