@@ -20,6 +20,7 @@ namespace Server.Controllers
             this.connector = new DBConnector();
         }
 
+    
         [HttpGet]
         [Route("createuser/{username?}")]
         public async Task<StatusCodeResult> CreateUserAsync(string username)
@@ -37,6 +38,17 @@ namespace Server.Controllers
         {
             await connector.OpenConnectionAsync();
             int has = await connector.CheckUserHasOrNot(username);
+            connector.CloseConnection();
+            return has;
+        }
+
+        //check system has a user or not
+        [HttpGet]
+        [Route("hasuser/{username?}")]
+        public async Task<int> HasUserAsync(string username)
+        {
+            await connector.OpenConnectionAsync();
+            int has = await connector.HasUserOrNot(username);
             connector.CloseConnection();
             return has;
         }

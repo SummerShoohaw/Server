@@ -37,7 +37,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "INSERT INTO user_table(wechatID) VALUE ('" + username + "');";
+            command.CommandText = "INSERT INTO User_Table(wechatID) VALUE ('" + username + "');";
             await command.ExecuteNonQueryAsync();
         }
 
@@ -48,7 +48,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "INSERT INTO pet_table(petName,petUrl,petOwner) VALUES ('" + petName + "','" + petType + "', '" + username + "');"; //Script not finished
+            command.CommandText = "INSERT INTO Pet_Table(petName,petUrl,petOwner) VALUES ('" + petName + "','" + petType + "', '" + username + "');"; //Script not finished
             await command.ExecuteNonQueryAsync();
         }
 
@@ -59,7 +59,25 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "SELECT count(*) FROM pet_table where petOwner ='" + username + "' and isReturned = false";
+            command.CommandText = "SELECT count(*) FROM Pet_Table where petOwner ='" + username + "' and isReturned = false";
+            int result = 0;
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    result = reader.GetInt32(0);
+                }
+            }
+            return result;
+        }
+
+        public async Task<int> HasUserOrNot(string username){
+            if (!isConnected)
+            {
+                throw new Exception("MySQL not connected");
+            }
+            var command = connection.CreateCommand();
+            command.CommandText = "SELECT count(*) FROM User_Table where wechatID ='" + username + "';";
             int result = 0;
             using (var reader = await command.ExecuteReaderAsync())
             {
