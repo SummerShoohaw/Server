@@ -59,7 +59,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "SELECT count(*) FROM pet_table where petOwner ='" + username + " ' and isReturned = false";
+            command.CommandText = "SELECT count(*) FROM pet_table where petOwner ='" + username + "' and isReturned = false";
             int result = 0;
             using (var reader = await command.ExecuteReaderAsync())
             {
@@ -78,7 +78,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "select * from pet_view";
+            command.CommandText = "call read_pet_procedure('"+username+"');";
             Pet pet = new Pet();
             using (var reader = await command.ExecuteReaderAsync())
             {
@@ -107,7 +107,7 @@ namespace Server.Models
             }
             string[] contents = { "petAge", "petWeight", "petExercise" };
             var command = connection.CreateCommand();
-            command.CommandText = "UPDATE pet_table SET " + contents[cnum] + " = " + contents[cnum] + "+" + number + " where petOwner = " + username;
+            command.CommandText = "UPDATE Pet_Table SET " + contents[cnum] + " = " + contents[cnum] + "+" + number + " where petOwner = '" + username+"';";
             await command.ExecuteReaderAsync();
         }
 
