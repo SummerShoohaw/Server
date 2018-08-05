@@ -48,7 +48,7 @@ namespace Server.Models
                 throw new Exception("MySQL not connected");
             }
             var command = connection.CreateCommand();
-            command.CommandText = "INSERT INTO pet_table(petName,petUrl,petOwner,) VALUES ('" + petName + "','" + petType + "', '" + username + "');"; //Script not finished
+            command.CommandText = "INSERT INTO pet_table(petName,petUrl,petOwner) VALUES ('" + petName + "','" + petType + "', '" + username + "');"; //Script not finished
             await command.ExecuteNonQueryAsync();
         }
 
