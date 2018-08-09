@@ -1,0 +1,5 @@
+C:\Users\xu han\WebApps\wechatApi\Server
+--output-path=obj\Release\netcoreapp2.0\
+--application-name=Server
+--content-root=C:\Users\xu han\WebApps\wechatApi\Server
+--file=
